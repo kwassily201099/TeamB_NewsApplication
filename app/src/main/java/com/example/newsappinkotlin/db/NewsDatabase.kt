@@ -3,30 +3,35 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import com.example.newsappinkotlin.Model.News
 
 @Database(
     entities = [News::class],
-    version = 1
+    version = 1,
+    exportSchema = false
 )
+
 abstract class NewsDatabase : RoomDatabase() {
-    abstract fun getNewsDao(): NewsDao
+
 
     companion object{
         @Volatile
-        private var instance: NewsDatabase? = null
-        private val LOCK = Any()
+         var newsDataBase: NewsDatabase? = null
+         fun getDataBase(context: Context): NewsDatabase{
+             if (newsDataBase == null)
+                 newsDataBase =
+                     Room.databaseBuilder(context, NewsDatabase::class.java, "NewsDB")
+                         .build()
 
-        operator fun invoke(context: Context) = instance ?: synchronized(LOCK){
-            instance ?: createDatabase(context).also { instance = it }
-        }
+             return newsDataBase!!
 
-        private fun createDatabase(context: Context) =
-            Room.databaseBuilder(
-                context.applicationContext,
-                NewsDatabase::class.java,
-                "news_db.db"
-            ).build()
+
+
+         }
+
     }
+
+    abstract fun getNewsDaoImpl(): NewsDao
 
 }
