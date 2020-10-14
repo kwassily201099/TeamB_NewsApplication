@@ -29,22 +29,24 @@ class ItemDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         vm = ViewModelProvider(requireActivity()).get(MyVM::class.java)
+        var saved: News? =null
         vm.newsLiveData2.observe(requireActivity(), Observer {
             Glide.with(frameLayout2).load("${it.image}").transform(CenterCrop()).into(img)
             newstitle.text=it.title
             des.text=it.description
             site.text=it.url
             time.text=it.author
+            saved=it
         })
 
         esc.setOnClickListener {
             findNavController().navigate(R.id.action_itemDetailsFragment_to_headlinesFragment)
         }
         imageView2.setOnClickListener(){
-            vm.getnld()
+            vm.saveditems.add(saved!!)
+            vm.newsLD.postValue(vm.saveditems)
             findNavController().navigate(R.id.action_itemDetailsFragment_to_savedItemsFragment)
         }
-
 
     }
 }

@@ -12,15 +12,14 @@ import retrofit2.Callback
 class MyVM : ViewModel() {
     var newsLiveData: MutableLiveData<News> = MutableLiveData()
     var newsLiveData2: MutableLiveData<News> = MutableLiveData()
-    var newsLD: MutableLiveData<News> = MutableLiveData()
+    var newsLD: MutableLiveData<List<News>> = MutableLiveData()
     var mutNewsLiveData: MutableLiveData<List<News>> = MutableLiveData()
+    var saveditems:MutableList<News> = mutableListOf()
 
     fun selectArticle(it : News){
         newsLiveData.postValue(it)
     }
-    fun getnld(){
-        newsLD=newsLiveData2
-    }
+
     fun festchN (page:Int) {
         Repo.Ser.getHead(page = page).enqueue(object : Callback<Response> {
             override fun onFailure(call: Call<Response>, t: Throwable) {
