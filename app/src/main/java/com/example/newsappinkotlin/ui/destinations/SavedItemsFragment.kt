@@ -34,8 +34,8 @@ class SavedItemsFragment : Fragment() {
             LinearLayoutManager.VERTICAL,
             false
         )
-        vm.newsLD.observe(requireActivity(), Observer<News>{
-            adapter.add(it)
+        vm.newsLD.observe(requireActivity(), Observer<List<News>>{
+            adapter.append(it)
         })
         vm.newsLiveData.observe(requireActivity(),Observer<News>{
             vm.newsLiveData2=vm.newsLiveData
